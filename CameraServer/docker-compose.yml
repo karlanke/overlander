@@ -1,0 +1,7 @@
+version: "3"
+services:
+  server:
+    image: camera_service
+    build:
+      context: .
+      dockerfile: Dockerfile
