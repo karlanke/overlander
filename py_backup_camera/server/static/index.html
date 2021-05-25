@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Backup Camera</title>
+</head>
+
+<body>
+    <h1>Camera Stream</h1>
+    <form action="" onsubmit="sendMessage(event)">
+        <input type="text" id="messageText" autocomplete="off" />
+        <button>Send</button>
+    </form>
+    <ul id='messages'>
+    </ul>
+    <img id="cameraFrames" src="">
+    <hr />
+    <iframe name="dummyframe" id="dummyframe" style="display: none;"></iframe>
+
+    <button id="lightOn" x-status="1">Light On</button>
+    <button id="lightOff" x-status="0">Light Off</button>
+
+    <script>
+        function ws_url(s) {
+            var l = window.location;
+            return ((l.protocol === "https:") ? "wss://" : "ws://") + l.host + s;
+        }
+
+        var ws = new WebSocket(ws_url('/stream'));
+        var timeout;
+
+        var img = document.getElementById('cameraFrames');
+        var urlCreator = window.URL || window.webkitURL;
+
+
+        ws.onmessage = function (event) {
+            // If there's a timer, cancel it
+            if (timeout) {
+                window.cancelAnimationFrame(timeout);
+            }
+
+            // Setup the new requestAnimationFrame()
+            timeout = window.requestAnimationFrame(function () {
+                var imageUrl = urlCreator.createObjectURL(event.data);
+                img.src = imageUrl
+
+            });
+
+        };
+
+        document.getElementById('lightOn').onclick = function () {
+            ws.send("light|on")
+        }
+
+        document.getElementById('lightOff').onclick = function () {
+            ws.send("light|off")
+        }
+
+
+    </script>
+
+</body>
+
+</html>

@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using CameraServer.Hubs;
 
 namespace CameraServer
 {
@@ -28,6 +29,7 @@ namespace CameraServer
         {
 
             services.AddControllers();
+            services.AddSignalR().AddMessagePackProtocol();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "CameraServer", Version = "v1" });
@@ -51,6 +53,9 @@ namespace CameraServer
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+
+                endpoints.MapHub<CameraHub>("/stream");
+
             });
         }
     }

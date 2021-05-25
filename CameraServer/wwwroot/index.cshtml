@@ -1,0 +1,40 @@
+@page
+<div class="row">
+    <div class="col-12">
+        <canvas id="videoCanvas" width="40vw" height="30vw"></canvas>
+    </div>
+</div>
+<div class="row">
+    <div class="col-6">
+        <ul id="messagesList"></ul>
+    </div>
+</div>
+<script src="~/js/signalr/dist/browser/signalr.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/msgpack5/5.3.1/msgpack5.min.js"
+    integrity="sha512-rMsh9OldZeo4ZBHh7blxOEsbLw3hLvEKQw0ZMCBssyAi3fvsclwB15EmnZaqn3hGszg/6Nv3j3y4xkechCmhxA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="~/js/signalr/dist/browser/signalr-protocol-msgpack.js"></script>
+
+<script>
+    "use strict";
+
+    var connection = new signalR.HubConnectionBuilder()
+        .withHubProtocol(new MessagePackHubProtocol())
+        .withUrl("/cameraHub").build();
+    var currentFrame = null;
+
+    function draw() {
+        canvas = document.getElementById("videoCanvas");
+        context = canvas.getContext("2d");
+    }
+
+    connection.on("ReceiveMessage", function (frame) {
+        currentFrame = frame;
+        window.requestAnimationFrame(draw);
+    });
+
+    connection.start().catch(function (err) {
+        return console.error(err.toString());
+    });
+
+</script>
