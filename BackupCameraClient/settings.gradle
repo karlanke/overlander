@@ -1,0 +1,2 @@
+rootProject.name = "BackupCameraClient"
+include ':app'
