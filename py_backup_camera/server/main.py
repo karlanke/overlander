@@ -20,7 +20,7 @@ open_sockets: Dict[uuid.UUID, WebSocket] = {}
 @contextmanager
 def get_hardware():
     # define a video capture object
-    vid = cv2.VideoCapture(1)
+    vid = cv2.VideoCapture(0)
     vid.set(cv2.CAP_PROP_BUFFERSIZE, 3)
     RELAY_PIN = 4
 
