@@ -3,6 +3,6 @@ opencv-python
 aiofiles
 uvicorn[standard]
 websockets
-png
+pypng
 gpiozero
 RPi.GPIO
