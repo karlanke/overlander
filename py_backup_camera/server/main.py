@@ -22,7 +22,7 @@ def get_hardware():
     # define a video capture object
     vid = cv2.VideoCapture(0)
     vid.set(cv2.CAP_PROP_BUFFERSIZE, 1)
-    RELAY_PIN = 4
+    RELAY_PIN = 14
 
     # Triggered by the output pin going high: active_high=True
     # Initially off: initial_value=False
