@@ -27,7 +27,7 @@ def get_hardware():
     # Triggered by the output pin going high: active_high=True
     # Initially off: initial_value=False
     try:
-        relay = gpiozero.OutputDevice(RELAY_PIN, active_high=True, initial_value=False)
+        relay = gpiozero.OutputDevice(RELAY_PIN, active_high=False, initial_value=False)
     except gpiozero.exc.BadPinFactory:
         relay = MockRelay()
 
