@@ -21,7 +21,7 @@ open_sockets: Dict[uuid.UUID, WebSocket] = {}
 def get_hardware():
     # define a video capture object
     vid = cv2.VideoCapture(0)
-    vid.set(cv2.CAP_PROP_BUFFERSIZE, 3)
+    vid.set(cv2.CAP_PROP_BUFFERSIZE, 1)
     RELAY_PIN = 4
 
     # Triggered by the output pin going high: active_high=True
