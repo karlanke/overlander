@@ -1,0 +1,14 @@
+[Unit]
+Description=Python Backup Camera Service
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/python3 -u run.pu
+WorkingDirectory=/home/pi/overlander/py_backup_camera
+StandardOutput=inherit
+StandardError=inherit
+Restart=always
+User=pi
+
+[Install]
+WantedBy=multi-user.target
