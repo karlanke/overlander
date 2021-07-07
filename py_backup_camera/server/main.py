@@ -8,6 +8,7 @@ import gpiozero
 from contextlib import contextmanager
 import asyncio
 import uuid
+import time
 
 from .mock_relay import MockRelay
 from .images import create_fake_file
@@ -69,9 +70,9 @@ def index():
 async def send_video_frame(vid: cv2.VideoCapture, websocket: WebSocket):
     ret, frame = vid.read()
     if not ret:
-        print("No frame returned")
         with open(f'{path}/static/there-is-no-connected-camera-mac.jpg', 'rb') as f:
             img = f.read()
+            time.sleep('.1')
             await websocket.send_bytes(img)
     else:
         ret, img = cv2.imencode('.png', frame)
