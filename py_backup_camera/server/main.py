@@ -17,11 +17,12 @@ app = FastAPI()
 
 open_sockets: Dict[uuid.UUID, WebSocket] = {}
 
+current_relay = None
+
 
 @contextmanager
 def get_hardware():
     try:
-        raise Exception('test')
         # define a video capture object
         vid = cv2.VideoCapture(0)
         vid.set(cv2.CAP_PROP_BUFFERSIZE, 1)
@@ -32,15 +33,21 @@ def get_hardware():
 
     # Triggered by the output pin going high: active_high=True
     # Initially off: initial_value=False
-    try:
-        relay = gpiozero.OutputDevice(RELAY_PIN, active_high=False, initial_value=False)
-    except gpiozero.exc.BadPinFactory:
-        relay = MockRelay()
+    global current_relay
+    if not current_relay:
+        try:
+            current_relay = gpiozero.OutputDevice(RELAY_PIN, active_high=False, initial_value=False)
+        except gpiozero.exc.BadPinFactory:
+            current_relay = MockRelay()
 
-    yield vid, relay
+    yield vid, current_relay
 
     # After the loop release the cap object
     vid.release()
+
+    # and the relay
+    current_relay = None
+
     try:
         # Destroy all the windows
         cv2.destroyAllWindows()
