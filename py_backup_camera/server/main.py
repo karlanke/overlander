@@ -1,3 +1,4 @@
+from .mock_camera import MockCamera
 from typing import Dict
 from fastapi import FastAPI, WebSocket
 from fastapi.responses import FileResponse
@@ -19,9 +20,14 @@ open_sockets: Dict[uuid.UUID, WebSocket] = {}
 
 @contextmanager
 def get_hardware():
-    # define a video capture object
-    vid = cv2.VideoCapture(0)
-    vid.set(cv2.CAP_PROP_BUFFERSIZE, 1)
+    try:
+        raise Exception('test')
+        # define a video capture object
+        vid = cv2.VideoCapture(0)
+        vid.set(cv2.CAP_PROP_BUFFERSIZE, 1)
+    except Exception:
+        vid = MockCamera()
+
     RELAY_PIN = 14
 
     # Triggered by the output pin going high: active_high=True
@@ -35,8 +41,11 @@ def get_hardware():
 
     # After the loop release the cap object
     vid.release()
-    # Destroy all the windows
-    cv2.destroyAllWindows()
+    try:
+        # Destroy all the windows
+        cv2.destroyAllWindows()
+    except Exception:
+        pass
 
 
 @app.on_event('shutdown')
