@@ -21,11 +21,24 @@ open_sockets: Dict[uuid.UUID, WebSocket] = {}
 current_relay = None
 
 
+def returnCameraIndexes():
+    # checks the first 20 indexes.
+    arr = []
+    for i in range(20):
+        cap = cv2.VideoCapture(i)
+        if cap.read()[0]:
+            arr.append(i)
+            cap.release()
+    return arr
+
+
 @contextmanager
 def get_hardware():
     try:
         # define a video capture object
-        vid = cv2.VideoCapture(0)
+        cameras = returnCameraIndexes()
+        print(f'Found cameras: {cameras}')
+        vid = cv2.VideoCapture(cameras[0])
         vid.set(cv2.CAP_PROP_BUFFERSIZE, 1)
     except Exception:
         vid = MockCamera()
