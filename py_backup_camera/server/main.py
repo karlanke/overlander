@@ -69,10 +69,13 @@ def index():
 async def send_video_frame(vid: cv2.VideoCapture, websocket: WebSocket):
     ret, frame = vid.read()
     if not ret:
-        raise Exception("No frame returned")
-
-    ret, img = cv2.imencode('.png', frame)
-    await websocket.send_bytes(img.tobytes())
+        print("No frame returned")
+        with open(f'{path}/static/there-is-no-connected-camera-mac.jpg', 'rb') as f:
+            img = f.read()
+            await websocket.send_bytes(img)
+    else:
+        ret, img = cv2.imencode('.png', frame)
+        await websocket.send_bytes(img.tobytes())
 
 
 @app.websocket("/stream")
