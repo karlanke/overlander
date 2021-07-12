@@ -36,9 +36,9 @@ def returnCameraIndexes():
 def get_hardware():
     try:
         # define a video capture object
-        cameras = returnCameraIndexes()
-        print(f'Found cameras: {cameras}')
-        vid = cv2.VideoCapture(cameras[0])
+        #cameras = returnCameraIndexes()
+        #print(f'Found cameras: {cameras}')
+        vid = cv2.VideoCapture(0)
         vid.set(cv2.CAP_PROP_BUFFERSIZE, 1)
     except Exception:
         vid = MockCamera()
